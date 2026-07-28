@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarbhCare: Hospital-Linked Smart Pregnancy Band System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-rose-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between p-6">
+
+    <!-- ========================================== -->
+    <!-- STEP 1: HOSPITAL AGENT ONBOARDING FORM -->
+    <!-- ========================================== -->
+    <div id="onboarding-screen" class="max-w-lg mx-auto w-full my-auto bg-white p-8 rounded-3xl shadow-xl border border-rose-100 space-y-6">
+        <div class="text-center">
+            <h1 class="text-2xl font-black text-rose-600 tracking-tight">GARBH<span class="text-rose-400">CARE</span></h1>
+            <p class="text-xs text-rose-500 font-medium mt-1">Hospital Agent Portal & Band Pairing</p>
+        </div>
+
+        <div class="bg-rose-50 p-4 rounded-2xl border border-rose-100 text-xs text-rose-700">
+            🏥 <strong>Agent Instructions:</strong> Enter patient details, link the physical smart band serial number, and schedule the next clinical scan date.
+        </div>
+
+        <form id="registration-form" onsubmit="handleRegistration(event)" class="space-y-4 text-xs">
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Expectant Mother's Full Name</label>
+                <input type="text" id="patient-name" required placeholder="e.g., Ananya Sharma" class="w-full p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Patient Mobile No.</label>
+                    <input type="tel" id="patient-mob" required placeholder="9876543210" class="w-full p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Email ID</label>
+                    <input type="email" id="patient-email" required placeholder="ananya@example.com" class="w-full p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Husband / Guardian Name</label>
+                    <input type="text" id="guardian-name" required placeholder="Rahul Sharma" class="w-full p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Guardian Mobile No.</label>
+                    <input type="tel" id="guardian-mob" required placeholder="9123456789" class="w-full p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-rose-600 mb-1">Smart Band Serial No.</label>
+                    <input type="text" id="band-serial" required placeholder="GB-8842" class="w-full p-3 rounded-xl border-2 border-rose-300 bg-rose-50/50 font-mono font-bold text-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block font-bold text-rose-600 mb-1">Next Clinic Scanning Date</label>
+                    <input type="date" id="scan-date" required class="w-full p-3 rounded-xl border-2 border-rose-300 bg-rose-50/50 font-bold text-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm py-4 rounded-2xl shadow-lg transition-all cursor-pointer mt-2">
+                🔗 Link Band & Sync with Hospital Agent
+            </button>
+        </form>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- STEP 2: LINKED SMART BAND DASHBOARD -->
+    <!-- ========================================== -->
+    <div id="band-dashboard" class="hidden max-w-4xl mx-auto w-full space-y-6 flex-grow flex flex-col justify-between">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center border-b border-rose-200 pb-4 w-full">
+            <div>
+                <h1 class="text-xl font-black text-rose-600 tracking-tight">GARBH-BAND <span class="text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full font-mono ml-2">DIRECTLY LINKED TO HOSPITAL AGENT</span></h1>
+                <p class="text-xs text-slate-500 font-medium" id="patient-display-info">Patient: Loading...</p>
+            </div>
+            <div class="bg-white px-3 py-1.5 rounded-xl shadow-sm border border-rose-100 text-xs font-semibold text-emerald-600 flex items-center gap-2 font-mono">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="active-band-label">Band ID: Linked</span>
+            </div>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- REALISTIC WEARABLE SMART BAND VISUALIZER -->
+        <!-- ========================================== -->
+        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-rose-950 p-6 rounded-3xl shadow-xl text-white flex flex-col md:flex-row items-center justify-between border-2 border-rose-500/30">
+            
+            <div class="flex items-center gap-6">
+                <!-- WRISTBAND BELT & HARDWARE RENDER -->
+                <div class="relative flex items-center justify-center">
+                    <!-- Top Strap Loop -->
+                    <div class="absolute -top-10 w-8 h-12 bg-slate-950 rounded-t-lg border-x-2 border-rose-500/40 shadow-inner"></div>
+                    <!-- Bottom Strap Loop with Holes -->
+                    <div class="absolute -bottom-10 w-8 h-12 bg-slate-950 rounded-b-lg border-x-2 border-rose-500/40 flex flex-col items-center justify-around py-1">
+                        <div class="w-1.5 h-1.5 bg-rose-900 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-rose-900 rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-rose-900 rounded-full"></div>
+                    </div>
+
+                    <!-- Main Smart Band Capsule Unit -->
+                    <div class="w-36 h-20 bg-gradient-to-br from-slate-950 to-slate-900 rounded-2xl border-2 border-rose-500/70 shadow-2xl flex items-center justify-center p-2 relative z-10">
+                        <!-- OLED Display Screen -->
+                        <div id="band-screen-container" class="w-full h-full bg-black rounded-xl border border-rose-500/30 flex flex-col items-center justify-center p-1 text-center shadow-inner transition-all">
+                            <span class="text-[9px] font-mono text-rose-400 font-bold uppercase tracking-wider" id="band-screen-status">SYSTEM OK</span>
+                            <span class="text-sm font-mono text-white font-black my-0.5" id="band-screen-metric">84 BPM</span>
+                            <span class="text-[8px] font-mono text-emerald-400" id="band-screen-sub">SYNCHED</span>
+                        </div>
+                        <!-- Side Touch Ring / Button Indicator -->
+                        <div class="absolute right-0.5 top-1/2 -translate-y-1/2 w-1 h-4 bg-rose-500 rounded-l"></div>
+                    </div>
+                </div>
+
+                <div class="ml-4">
+                    <span class="text-xs bg-rose-500/20 text-rose-300 px-2.5 py-1 rounded-full font-mono border border-rose-500/30">WEARABLE BAND MOCKUP</span>
+                    <h2 class="text-lg font-black tracking-tight mt-1">Smart Wrist Band Simulator</h2>
+                    <p class="text-xs text-slate-300">Live haptic feedback loop synced with the mother's clinical profile.</p>
+                </div>
+            </div>
+
+            <div class="mt-4 md:mt-0 flex items-center gap-3 bg-black/50 px-4 py-2.5 rounded-xl border border-rose-500/20 text-xs font-mono">
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping" id="band-led"></span>
+                <span id="band-led-text" class="text-emerald-400 font-bold">BAND ACTIVE & PAIRED</span>
+            </div>
+        </div>
+
+        <!-- Overwork / Reminder Banner -->
+        <div id="alert-banner" class="hidden bg-amber-500 text-white p-5 rounded-3xl shadow-lg flex items-center justify-between animate-bounce border-2 border-amber-600">
+            <div class="flex items-center gap-4">
+                <span class="text-3xl" id="banner-icon">⌚⚡</span>
+                <div>
+                    <h3 class="font-black text-sm tracking-wide" id="banner-title">BAND HAPTIC ALERT: OVERWORK DETECTED!</h3>
+                    <p class="text-xs text-amber-100 mt-0.5" id="banner-desc">Shift limit exceeded. The wristband is vibrating to mandate a rest break.</p>
+                </div>
+            </div>
+            <button onclick="dismissAlert()" class="bg-white text-amber-950 font-bold text-xs px-5 py-3 rounded-2xl shadow cursor-pointer hover:bg-amber-50 transition-all">
+                Acknowledge
+            </button>
+        </div>
+
+        <!-- Band Telemetry Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto">
+            
+            <!-- Metric 1: Blood Pressure & Stress -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-rose-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-700 text-xs uppercase tracking-wider mb-2">Live Blood Pressure</h3>
+                    <div class="text-2xl font-black text-slate-800 font-mono my-2" id="bp-display">120 / 80 <span class="text-xs font-normal text-emerald-600">Normal</span></div>
+                    <p class="text-xs text-slate-500">Continuous optical sensor monitoring hypertension risks.</p>
+                </div>
+                <button onclick="simulateStress()" class="mt-4 w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-rose-200 cursor-pointer">
+                    ⚡ Simulate BP Spike / Stress
+                </button>
+            </div>
+
+            <!-- Metric 2: Medicine Intake Compliance -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-rose-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Band Medicine Alert</h3>
+                    <div class="text-2xl font-black text-rose-600 font-mono my-2" id="med-state">DUE NOW</div>
+                    <p class="text-xs text-slate-500">Band blinking red for Iron & Folic Acid dose.</p>
+                </div>
+                <button onclick="confirmMed()" id="med-btn" class="mt-4 w-full bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm cursor-pointer">
+                    ✓ Confirm via Band Tap
+                </button>
+            </div>
+
+            <!-- Metric 3: Active Scanning Schedule Reminder -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-rose-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Next Hospital Scan</h3>
+                    <div class="text-xl font-black text-indigo-600 font-mono my-2" id="scan-display-card">Loading...</div>
+                    <p class="text-xs text-slate-500">Automated band reminder synced by hospital agent.</p>
+                </div>
+                <button onclick="testScanReminder()" class="mt-4 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-indigo-200 cursor-pointer">
+                    🔔 Test Scan Reminder Haptic
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Emergency SOS -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-rose-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🚨</span>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm">Band Emergency SOS (Hold 3s)</h4>
+                    <p class="text-xs text-slate-500" id="sos-contact-info">Alerts hospital agent & partner instantly.</p>
+                </div>
+            </div>
+            <button onclick="triggerSOS()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow cursor-pointer">
+                TRIGGER BAND SOS
+            </button>
+        </div>
+
+        <!-- Footer Log -->
+        <footer class="bg-white border border-rose-200 rounded-2xl p-3 shadow-sm">
+            <div class="font-mono text-xs text-slate-600 space-y-1" id="log-box">
+                <div>[System] Patient registered and linked to hospital agent. Wearable band simulator active.</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        let patientData = {};
+
+        function handleRegistration(event) {
+            event.preventDefault();
+            
+            patientData.name = document.getElementById('patient-name').value;
+            patientData.mob = document.getElementById('patient-mob').value;
+            patientData.guardian = document.getElementById('guardian-name').value;
+            patientData.guardianMob = document.getElementById('guardian-mob').value;
+            patientData.serial = document.getElementById('band-serial').value.toUpperCase();
+            patientData.scanDate = document.getElementById('scan-date').value;
+
+            // Corrected mappings to prevent mismatch between form entries and dashboard elements
+            document.getElementById('patient-display-info').innerText = `Patient: ${patientData.name} (${patientData.mob}) | Agent Direct-Link Active`;
+            document.getElementById('active-band-label').innerText = `Band ID: ${patientData.serial}`;
+            document.getElementById('scan-display-card').innerText = patientData.scanDate || "Not Set";
+            document.getElementById('sos-contact-info').innerText = `Alerts Hospital Agent & Partner ${patientData.guardian} (${patientData.guardianMob}) instantly.`;
+
+            document.getElementById('onboarding-screen').classList.add('hidden');
+            document.getElementById('band-dashboard').classList.remove('hidden');
+
+            addLog(`[Hospital Agent Portal] Patient ${patientData.name} registered. Band #${patientData.serial} linked. Next scan date synced: ${patientData.scanDate}.`);
+        }
+
+        function simulateStress() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('bp-display').innerHTML = '145 / 95 <span class="text-xs font-semibold text-red-500">HIGH BP</span>';
+            
+            const screen = document.getElementById('band-screen-container');
+            screen.className = "w-full h-full bg-red-950 rounded-xl border-2 border-red-500 flex flex-col items-center justify-center p-1 text-center shadow-inner animate-pulse";
+            document.getElementById('band-screen-status').innerText = "HIGH STRESS";
+            document.getElementById('band-screen-status').className = "text-[9px] font-mono text-red-300 font-bold uppercase";
+            document.getElementById('band-screen-metric').innerText = "124 BPM";
+            document.getElementById('band-screen-sub').innerText = "REST NOW!";
+            document.getElementById('band-screen-sub').className = "text-[8px] font-mono text-red-300 font-bold";
+
+            document.getElementById('band-led').className = "w-3 h-3 rounded-full bg-red-500 animate-ping";
+            document.getElementById('band-led-text').innerText = "BAND VIBRATING (OVERWORK)";
+            document.getElementById('band-led-text').className = "text-red-400 font-bold";
+
+            const banner = document.getElementById('alert-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('banner-icon').innerText = "⌚⚡";
+            document.getElementById('banner-title').innerText = "BAND HAPTIC ALERT: HIGH STRESS & OVERWORK!";
+            document.getElementById('banner-desc').innerText = `Blood pressure spiked for ${patientData.name}. Band is vibrating to mandate a rest break.`;
+            
+            addLog(`[${time}] ⌚ Band Warning for ${patientData.name} (${patientData.serial}): High BP (145/95) detected. Hospital Agent notified.`);
+        }
+
+        function testScanReminder() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const screen = document.getElementById('band-screen-container');
+            screen.className = "w-full h-full bg-indigo-950 rounded-xl border-2 border-indigo-400 flex flex-col items-center justify-center p-1 text-center shadow-inner";
+            document.getElementById('band-screen-status').innerText = "CLINIC SCAN";
+            document.getElementById('band-screen-status').className = "text-[9px] font-mono text-indigo-300 font-bold uppercase";
+            document.getElementById('band-screen-metric').innerText = "DUE SOON";
+            document.getElementById('band-screen-sub').innerText = patientData.scanDate;
+            document.getElementById('band-screen-sub').className = "text-[8px] font-mono text-indigo-200";
+
+            const banner = document.getElementById('alert-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('banner-icon').innerText = "📅🏥";
+            document.getElementById('banner-title').innerText = "HOSPITAL SCAN REMINDER SYNCED!";
+            document.getElementById('banner-desc').innerText = `Upcoming clinical scanning appointment scheduled for ${patientData.name} on ${patientData.scanDate}.`;
+
+            addLog(`[${time}] 🔔 Band Reminder: Automated haptic alert triggered for ${patientData.name}'s scanning date (${patientData.scanDate}).`);
+        }
+
+        function dismissAlert() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('alert-banner').classList.add('hidden');
+            document.getElementById('bp-display').innerHTML = '120 / 80 <span class="text-xs font-normal text-emerald-600">Normal</span>';
+            
+            const screen = document.getElementById('band-screen-container');
+            screen.className = "w-full h-full bg-black rounded-xl border border-rose-500/30 flex flex-col items-center justify-center p-1 text-center shadow-inner";
+            document.getElementById('band-screen-status').innerText = "SYSTEM OK";
+            document.getElementById('band-screen-status').className = "text-[9px] font-mono text-rose-400 font-bold uppercase";
+            document.getElementById('band-screen-metric').innerText = "84 BPM";
+            document.getElementById('band-screen-sub').innerText = "SYNCHED";
+            document.getElementById('band-screen-sub').className = "text-[8px] font-mono text-emerald-400";
+
+            document.getElementById('band-led').className = "w-3 h-3 rounded-full bg-emerald-400 animate-pulse";
+            document.getElementById('band-led-text').innerText = "BAND ACTIVE & PAIRED";
+            document.getElementById('band-led-text').className = "text-emerald-400 font-bold";
+
+            addLog(`[${time}] ✅ Alert acknowledged on band for ${patientData.name}. Vitals normalized.`);
+        }
+
+        function confirmMed() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('med-state').innerText = "TAKEN ✓";
+            document.getElementById('med-state').className = "text-2xl font-black text-emerald-600 font-mono my-2";
+            document.getElementById('med-btn').innerText = "✓ Confirmed via Band Tap";
+            document.getElementById('med-btn').className = "mt-4 w-full bg-emerald-600 text-white font-bold text-xs py-2.5 rounded-xl cursor-default";
+            
+            document.getElementById('band-screen-status').innerText = "MEDICINE";
+            document.getElementById('band-screen-metric').innerText = "LOGGED ✓";
+            document.getElementById('band-screen-sub').innerText = "THANK YOU";
+
+            addLog(`[${time}] 💊 Daily medicine compliance verified via physical wristband tap for ${patientData.name}. Logged to hospital database.`);
+        }
+
+        function triggerSOS() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const screen = document.getElementById('band-screen-container');
+            screen.className = "w-full h-full bg-red-600 rounded-xl border-2 border-white flex flex-col items-center justify-center p-1 text-center shadow-inner animate-bounce";
+            document.getElementById('band-screen-status').innerText = "EMERGENCY";
+            document.getElementById('band-screen-metric').innerText = "SOS SENT";
+            document.getElementById('band-screen-sub').innerText = "HELP ON WAY";
+
+            addLog(`[${time}] 🚨 EMERGENCY SOS TRIGGERED FROM BAND #${patientData.serial} (${patientData.name})! Alert dispatched to Hospital Agent and Guardian ${patientData.guardian} (${patientData.guardianMob}).`);
+            alert(`🚨 SOS Triggered! Emergency signal and GPS location for ${patientData.name} dispatched directly to the Hospital Agent and Partner (${patientData.guardian}).`);
+        }
+
+        function addLog(text) {
+            const logBox = document.getElementById('log-box');
+            const newLog = document.createElement('div');
+            newLog.innerText = text;
+            logBox.prepend(newLog);
+        }
+    </script>
+</body>
+</html>
